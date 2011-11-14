@@ -19,12 +19,10 @@ public class MemcachedCache implements Cache {
 		this.expiry = expiry;
 	}
 
-	@Override
 	public String getName() {
 		return name;
 	}
 
-	@Override
 	public Object getNativeCache() {
 		return client;
 	}
@@ -39,13 +37,11 @@ public class MemcachedCache implements Cache {
 		}
 	}
 
-	@Override
 	public ValueWrapper get(Object key) {
 		Object value = client.get(keyToString(key));
 		return new ValueWrapperImpl(value);
 	}
 
-	@Override
 	public void put(Object key, Object value) {
 		OperationFuture<Boolean> of = client.add(keyToString(key), expiry,
 				value);
@@ -58,7 +54,6 @@ public class MemcachedCache implements Cache {
 		}
 	}
 
-	@Override
 	public void evict(Object key) {
 		OperationFuture<Boolean> of = client.delete(keyToString(key));
 		try {
@@ -70,7 +65,6 @@ public class MemcachedCache implements Cache {
 		}
 	}
 
-	@Override
 	public void clear() {
 		// Not implemented
 	}
