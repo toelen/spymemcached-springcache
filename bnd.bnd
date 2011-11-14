@@ -1,0 +1,2 @@
+Bundle-SymbolicName: spymemcached-springcache
+Export-Package: net.spy.memcached.spring.cache
