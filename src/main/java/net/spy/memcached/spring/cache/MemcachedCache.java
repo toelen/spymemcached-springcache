@@ -10,7 +10,7 @@ import org.springframework.cache.support.ValueWrapperImpl;
 
 public class MemcachedCache implements Cache {
 	private final String name;
-	private final MemcachedClient client;
+	private MemcachedClient client;
 	private int expiry = 3600;
 
 	public MemcachedCache(String name, MemcachedClient client, int expiry) {
@@ -67,6 +67,14 @@ public class MemcachedCache implements Cache {
 
 	public void clear() {
 		// Not implemented
+	}
+
+	public void setClient(MemcachedClient client) {
+		this.client = client;
+	}
+
+	public void setExpiry(int expiry) {
+		this.expiry = expiry;
 	}
 
 }

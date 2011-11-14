@@ -9,12 +9,60 @@ import org.springframework.cache.support.AbstractCacheManager;
 
 public class MemcachedCacheManager extends AbstractCacheManager {
 	private Collection<Cache> caches;
-	private final MemcachedClient client;
-	private final int expiry;
+	private MemcachedClient client = null;
+	private int expiry = -1;
+
+	public MemcachedCacheManager() {
+	}
 
 	public MemcachedCacheManager(MemcachedClient client, int expiry) {
-		this.client = client;
-		this.expiry = expiry;
+		setClient(client);
+		setExpiry(expiry);
+	}
+
+	private void checkState() {
+		if (client == null) {
+			throw new IllegalStateException(
+					"MemcachedClient not configured yet");
+		}
+	}
+
+	public Cache getCache(String name) {
+		checkState();
+
+		Cache cache = super.getCache(name);
+		if (cache == null) {
+			cache = new MemcachedCache(name, client, expiry);
+			addCache(cache);
+		}
+		return cache;
+	}
+
+	private void updateCaches() {
+		for (Cache cache : caches) {
+			if (cache instanceof MemcachedCache) {
+				MemcachedCache memcachedCache = (MemcachedCache) cache;
+				memcachedCache.setClient(client);
+				memcachedCache.setExpiry(expiry);
+			}
+		}
+	}
+
+	public Collection<Cache> getCaches() {
+		return caches;
+	}
+
+	public MemcachedClient getClient() {
+		return client;
+	}
+
+	public int getExpiry() {
+		return expiry;
+	}
+
+	@Override
+	protected Collection<Cache> loadCaches() {
+		return this.caches;
 	}
 
 	/**
@@ -24,18 +72,21 @@ public class MemcachedCacheManager extends AbstractCacheManager {
 		this.caches = caches;
 	}
 
-	@Override
-	protected Collection<Cache> loadCaches() {
-		return this.caches;
+	public void setClient(MemcachedClient client) {
+		this.client = client;
+
+		updateCaches();
 	}
 
-	public Cache getCache(String name) {
-		Cache cache = super.getCache(name);
-		if (cache == null) {
-			cache = new MemcachedCache(name, client, expiry);
-			addCache(cache);
-		}
-		return cache;
+	public void setExpiry(int expiry) {
+		this.expiry = expiry;
+
+		updateCaches();
+	}
+
+	public void shutdown() {
+		// TODO
+
 	}
 
 }
