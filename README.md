@@ -5,6 +5,7 @@ Usage
 
 Usage is very similar to the standard spring cache abstractions
 
+```xml
 <bean id="memcachedClient" class="net.spy.memcached.spring.MemcachedClientFactoryBean">
   ...
 </bean>
@@ -20,3 +21,4 @@ Usage is very similar to the standard spring cache abstractions
     </set>
   </property>
 </bean>
+```
