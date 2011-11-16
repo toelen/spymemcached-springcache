@@ -14,7 +14,7 @@ Usage is very similar to the standard spring cache abstractions
     <set>
       <bean class="net.spy.memcached.spring.cache.MemcachedCache">
           <property name="name" value="default">
-          <property name="client" value="memcachedClient">
+          <property name="client" ref="memcachedClient">
           <property name="expiry" value="3600">
       </bean>
     </set>
