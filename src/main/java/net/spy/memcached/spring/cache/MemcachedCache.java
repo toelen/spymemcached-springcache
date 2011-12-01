@@ -6,7 +6,7 @@ import net.spy.memcached.MemcachedClient;
 import net.spy.memcached.internal.OperationFuture;
 
 import org.springframework.cache.Cache;
-import org.springframework.cache.support.ValueWrapperImpl;
+import org.springframework.cache.support.SimpleValueWrapper;
 
 public class MemcachedCache implements Cache {
 	private final String name;
@@ -39,7 +39,7 @@ public class MemcachedCache implements Cache {
 
 	public ValueWrapper get(Object key) {
 		Object value = client.get(keyToString(key));
-		return new ValueWrapperImpl(value);
+		return new SimpleValueWrapper(value);
 	}
 
 	public void put(Object key, Object value) {
