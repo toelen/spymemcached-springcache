@@ -24,6 +24,8 @@ public class MemcachedCacheManager extends AbstractCacheManager {
 		if (client == null) {
 			throw new IllegalStateException(
 					"MemcachedClient not configured yet");
+		} else if (client.isAlive() == false) {
+			throw new IllegalStateException("MemcachedClient is not alive");
 		}
 	}
 
@@ -39,11 +41,13 @@ public class MemcachedCacheManager extends AbstractCacheManager {
 	}
 
 	private void updateCaches() {
-		for (Cache cache : caches) {
-			if (cache instanceof MemcachedCache) {
-				MemcachedCache memcachedCache = (MemcachedCache) cache;
-				memcachedCache.setClient(client);
-				memcachedCache.setExpiry(expiry);
+		if (caches != null) {
+			for (Cache cache : caches) {
+				if (cache instanceof MemcachedCache) {
+					MemcachedCache memcachedCache = (MemcachedCache) cache;
+					memcachedCache.setClient(client);
+					memcachedCache.setExpiry(expiry);
+				}
 			}
 		}
 	}
