@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import net.spy.memcached.AddrUtil;
 import net.spy.memcached.MemcachedClient;
 import net.spy.memcached.spring.cache.MemcachedCacheManager;
 
